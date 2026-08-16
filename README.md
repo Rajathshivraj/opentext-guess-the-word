@@ -208,14 +208,12 @@ python manage.py test game --verbosity=2
 
 
 ---
-<img width="1907" height="925" alt="Screenshot 2026-08-16 212204" src="https://github.com/user-attachments/assets/6b1a8068-54e2-4771-98c5-c0915d8813fe" />
-<img width="1910" height="970" alt="Screenshot 2026-08-16 212230" src="https://github.com/user-attachments/assets/e3e803a2-36c8-4d02-9af9-87e0f9b18cf5" />
-<img width="1913" height="962" alt="Screenshot 2026-08-16 213745" src="https://github.com/user-attachments/assets/4e60bcab-adf5-4cfc-85a8-23f1c70bf6a0" />
-<img width="1902" height="948" alt="Screenshot 2026-08-16 213714" src="https://github.com/user-attachments/assets/87f28447-b69f-4a23-b362-fc9e1340013a" />
-<img width="1907" height="971" alt="Screenshot 2026-08-16 212042" src="https://github.com/user-attachments/assets/8be02921-984a-4bd4-ba3a-b13ce6ddf26c" />
-
-
-
+<img width="1916" height="966" alt="Screenshot 2026-08-16 134535" src="https://github.com/user-attachments/assets/6816babd-4b07-4456-8a7a-15530098286c" />
+<img width="1852" height="504" alt="Screenshot 2026-08-16 134709" src="https://github.com/user-attachments/assets/1b062357-114d-4694-97b4-0557c30c0c17" />
+<img width="1907" height="890" alt="Screenshot 2026-08-16 212042" src="https://github.com/user-attachments/assets/ab677457-aadf-4d3d-81c5-a0622d961a70" />
+<img width="1916" height="873" alt="Screenshot 2026-08-16 212128" src="https://github.com/user-attachments/assets/db882190-5ea0-440d-aee8-8bf316d8d4c9" />
+<img width="1902" height="883" alt="Screenshot 2026-08-16 213235" src="https://github.com/user-attachments/assets/c45a7059-7023-4254-ac1c-297a8e0b4014" />
+<img width="1902" height="838" alt="Screenshot 2026-08-16 213714" src="https://github.com/user-attachments/assets/d1dddf37-311f-4651-abee-4dd3751b65a6" />
 
 
 
