@@ -1,0 +1,127 @@
+{% extends 'game/base.html' %}
+{% load static %}
+
+{% block title %}Game #{{ game.id }}{% endblock %}
+
+{% block content %}
+<div class="game-container">
+    <div class="game-header">
+        <h1>Guess the Word</h1>
+        <div class="game-meta">
+            <span class="meta-item">🎯 Guesses: <strong>{{ guesses_used }}/5</strong></span>
+            <span class="meta-item">📅 Games left today: <strong>{{ games_remaining }}</strong></span>
+        </div>
+    </div>
+
+    <!-- Result modal -->
+    {% if show_result %}
+    <div class="result-overlay" id="resultOverlay">
+        <div class="result-modal">
+            {% if show_result == 'won' %}
+            <div class="result-icon">🏆</div>
+            <h2>Congratulations!</h2>
+            <p>You guessed <strong>{{ game.word.word }}</strong> in {{ guesses_used }} guess{{ guesses_used|pluralize
+                }}!</p>
+            {% elif show_result == 'lost' %}
+            <div class="result-icon">💔</div>
+            <h2>Better luck next time!</h2>
+            <p>The word was <strong>{{ game.word.word }}</strong>.</p>
+            {% endif %}
+            <a href="{% url 'dashboard' %}" class="btn btn-primary">Back to Dashboard</a>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Guess grid -->
+    <div class="guess-grid">
+        {% for row in grid_rows %}
+        <div class="guess-row">
+            {% for cell in row %}
+            <div class="tile {{ cell.color }} filled">{{ cell.letter }}</div>
+            {% endfor %}
+        </div>
+        {% endfor %}
+
+        {% if not game.is_complete and guesses_used < 5 %} <!-- Active input row -->
+            <div class="guess-row" id="activeRow">
+                <div class="tile" id="c0"></div>
+                <div class="tile" id="c1"></div>
+                <div class="tile" id="c2"></div>
+                <div class="tile" id="c3"></div>
+                <div class="tile" id="c4"></div>
+            </div>
+            {% endif %}
+
+            {% for i in "x"|rjust:empty_rows_count %}
+            <div class="guess-row">
+                <div class="tile"></div>
+                <div class="tile"></div>
+                <div class="tile"></div>
+                <div class="tile"></div>
+                <div class="tile"></div>
+            </div>
+            {% endfor %}
+    </div>
+
+    <!-- Guess form -->
+    {% if not game.is_complete %}
+    <form method="post" class="guess-form" id="guessForm">
+        {% csrf_token %}
+        <div class="guess-input-row">
+            {{ form.guess }}
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+        {% if form.guess.errors %}
+        {% for error in form.guess.errors %}
+        <span class="field-error">{{ error }}</span>
+        {% endfor %}
+        {% endif %}
+    </form>
+
+    <!-- Keyboard -->
+    <div class="keyboard" id="keyboard">
+        <div class="keyboard-row">
+            {% for letter in "QWERTYUIOP" %}
+            <button class="key" data-letter="{{ letter }}">{{ letter }}</button>
+            {% endfor %}
+        </div>
+        <div class="keyboard-row">
+            {% for letter in "ASDFGHJKL" %}
+            <button class="key" data-letter="{{ letter }}">{{ letter }}</button>
+            {% endfor %}
+        </div>
+        <div class="keyboard-row">
+            <button class="key key-wide" id="keyEnter">ENTER</button>
+            {% for letter in "ZXCVBNM" %}
+            <button class="key" data-letter="{{ letter }}">{{ letter }}</button>
+            {% endfor %}
+            <button class="key key-wide" id="keyBackspace">⌫</button>
+        </div>
+    </div>
+    {% else %}
+    <div class="game-over-actions">
+        <a href="{% url 'dashboard' %}" class="btn btn-outline">← Back to Dashboard</a>
+    </div>
+    {% endif %}
+
+    <!-- Colour legend -->
+    <div class="legend">
+        <div class="legend-item">
+            <div class="tile green legend-tile">A</div>
+            <span>Correct position</span>
+        </div>
+        <div class="legend-item">
+            <div class="tile orange legend-tile">B</div>
+            <span>Wrong position</span>
+        </div>
+        <div class="legend-item">
+            <div class="tile grey legend-tile">C</div>
+            <span>Not in word</span>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'game/js/game.js' %}"></script>
+{% endblock %}

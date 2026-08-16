@@ -1,0 +1,58 @@
+﻿{% extends 'game/base.html' %}
+
+{% block title %}User Report{% endblock %}
+
+{% block content %}
+<div class="report-container">
+    <h1>User Report</h1>
+    <p class="report-subtitle">View per-day game statistics for a specific player.</p>
+
+    <form method="get" class="report-form">
+        <div class="form-row">
+            <label for="user_id">Select Player:</label>
+            <select name="user_id" id="user_id" class="form-control">
+                <option value="">-- Choose a player --</option>
+                {% for player in players %}
+                    <option value="{{ player.pk }}"{% if selected_user.pk == player.pk %} selected{% endif %}>
+                        {{ player.username }}
+                    </option>
+                {% endfor %}
+            </select>
+            <button type="submit" class="btn btn-primary">View Report</button>
+        </div>
+    </form>
+
+    {% if selected_user %}
+    <div class="report-results">
+        <h2>Report for {{ selected_user.username }}</h2>
+        {% if report_rows %}
+        <table class="report-table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Words Tried</th>
+                    <th>Correct Guesses (Wins)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in report_rows %}
+                <tr>
+                    <td>{{ row.date|date:"F j, Y" }}</td>
+                    <td>{{ row.words_tried }}</td>
+                    <td>{{ row.correct_guesses }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+            <p class="no-data">No game data found for this player.</p>
+        {% endif %}
+    </div>
+    {% endif %}
+
+    <div class="report-links">
+        <a href="{% url 'daily_report' %}" class="btn btn-outline">Daily Report</a>
+        <a href="{% url 'admin:index' %}" class="btn btn-outline">Admin Panel</a>
+    </div>
+</div>
+{% endblock %}

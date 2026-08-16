@@ -1,0 +1,40 @@
+{% extends 'game/base.html' %}
+
+{% block title %}Daily Report{% endblock %}
+
+{% block content %}
+<div class="report-container">
+    <h1>📊 Daily Report</h1>
+    <p class="report-subtitle">See how many players played and won on a given date.</p>
+
+    <form method="get" class="report-form">
+        <div class="form-row">
+            <label for="date">Select Date:</label>
+            <input type="date" name="date" id="date" class="form-control" value="{{ report_date|date:'Y-m-d' }}"
+                max="{{ today|date:'Y-m-d' }}">
+            <button type="submit" class="btn btn-primary">View Report</button>
+        </div>
+    </form>
+
+    {% if report_date %}
+    <div class="report-results">
+        <h2>Results for {{ report_date|date:"F j, Y" }}</h2>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value">{{ num_users }}</div>
+                <div class="stat-label">Players</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">{{ num_wins }}</div>
+                <div class="stat-label">Wins</div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="report-links">
+        <a href="{% url 'user_report' %}" class="btn btn-outline">👤 View User Report</a>
+        <a href="{% url 'admin:index' %}" class="btn btn-outline">⚙️ Admin Panel</a>
+    </div>
+</div>
+{% endblock %}

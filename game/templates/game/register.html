@@ -1,0 +1,65 @@
+{% extends 'game/base.html' %}
+
+{% block title %}Register{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="auth-card">
+        <div class="auth-header">
+            <span class="auth-icon">✏️</span>
+            <h1>Create Account</h1>
+            <p>Join to start playing Guess the Word</p>
+        </div>
+
+        <form method="post" class="auth-form" novalidate>
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label for="id_username">Username</label>
+                {{ form.username }}
+                <small class="form-hint">Letters only, minimum 5 characters</small>
+                {% if form.username.errors %}
+                {% for error in form.username.errors %}
+                <span class="field-error">{{ error }}</span>
+                {% endfor %}
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <label for="id_password">Password</label>
+                {{ form.password }}
+                <small class="form-hint">Min 5 chars: must include a letter, a number, and one of: $ % *</small>
+                {% if form.password.errors %}
+                {% for error in form.password.errors %}
+                <span class="field-error">{{ error }}</span>
+                {% endfor %}
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <label for="id_password_confirm">Confirm Password</label>
+                {{ form.password_confirm }}
+                {% if form.password_confirm.errors %}
+                {% for error in form.password_confirm.errors %}
+                <span class="field-error">{{ error }}</span>
+                {% endfor %}
+                {% endif %}
+            </div>
+
+            {% if form.non_field_errors %}
+            <div class="form-errors">
+                {% for error in form.non_field_errors %}
+                <p class="field-error">{{ error }}</p>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <button type="submit" class="btn btn-primary btn-full">Create Account</button>
+        </form>
+
+        <div class="auth-footer">
+            Already have an account? <a href="{% url 'login' %}">Log in</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

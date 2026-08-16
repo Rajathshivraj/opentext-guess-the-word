@@ -1,0 +1,85 @@
+{% extends 'game/base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="dashboard">
+    <div class="dashboard-header">
+        <h1>Hello, {{ user.username }}! 👋</h1>
+        <p class="dashboard-subtitle">
+            {% if games_remaining > 0 %}
+            You have <strong>{{ games_remaining }}</strong> game{{ games_remaining|pluralize }} remaining today.
+            {% else %}
+            You've used all 3 games for today. Come back tomorrow!
+            {% endif %}
+        </p>
+        {% if games_remaining > 0 %}
+        <a href="{% url 'new_game' %}" class="btn btn-primary btn-lg">
+            ▶ Play New Game
+        </a>
+        {% endif %}
+    </div>
+
+    {% if today_games %}
+    <div class="section">
+        <h2>Today's Games</h2>
+        <div class="game-list">
+            {% for game in today_games %}
+            <div class="game-card status-{{ game.status }}">
+                <div class="game-card-header">
+                    <span class="status-badge status-{{ game.status }}">
+                        {% if game.status == 'won' %}🏆 Won
+                        {% elif game.status == 'lost' %}💔 Lost
+                        {% else %}🎮 Active
+                        {% endif %}
+                    </span>
+                    <span class="game-time">{{ game.started_at|date:"H:i" }}</span>
+                </div>
+                <div class="game-card-body">
+                    <p>Guesses used: <strong>{{ game.guess_count }}/5</strong></p>
+                    {% if not game.is_complete %}
+                    <a href="{% url 'game_view' game.pk %}" class="btn btn-primary btn-sm">Continue</a>
+                    {% else %}
+                    <span class="word-reveal">Word: <strong>{{ game.word.word }}</strong></span>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    {% if past_games %}
+    <div class="section">
+        <h2>Recent History</h2>
+        <table class="history-table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Word</th>
+                    <th>Result</th>
+                    <th>Guesses</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for game in past_games %}
+                <tr>
+                    <td>{{ game.started_at|date:"M d, Y" }}</td>
+                    <td><strong>{{ game.word.word }}</strong></td>
+                    <td>
+                        <span class="status-badge status-{{ game.status }}">
+                            {% if game.status == 'won' %}🏆 Won
+                            {% elif game.status == 'lost' %}💔 Lost
+                            {% else %}—
+                            {% endif %}
+                        </span>
+                    </td>
+                    <td>{{ game.guess_count }}/5</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
